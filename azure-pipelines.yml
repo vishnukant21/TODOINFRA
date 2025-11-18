@@ -1,0 +1,30 @@
+trigger:
+- main
+stages:
+  - stage: terraforminstaller
+    displayName: terraforminstaller
+    jobs:
+      - job: terraforminstaller
+        displayName: terraforminstaller
+        pool: windows
+        steps:
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
+        - 
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/TODOINFRA'
+            backendServiceArm: 'serv'
+            backendAzureRmResourceGroupName: 'vishnu_rg1'
+            backendAzureRmStorageAccountName: 'vishnustg321'
+            backendAzureRmContainerName: 'vishnucnt321'
+            backendAzureRmKey: 'terraform.tfstate'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/TODOINFRA'
+            environmentServiceNameAzureRM: 'serv'
